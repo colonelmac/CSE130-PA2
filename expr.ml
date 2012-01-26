@@ -4,8 +4,6 @@
  * based on code by Chris Stone
  *)
 
-(* REMEMBER TO DOCUMENT ALL FUNCTIOONS THAT YOU WRITE OR COMPLETE *)
-
 type expr = 
     VarX
   | VarY
@@ -15,7 +13,19 @@ type expr =
   | Times    of expr * expr
   | Thresh   of expr * expr * expr * expr	
 
-let rec exprToString e = failwith "to be written"
+let rec exprToString e = 
+    
+    let ex = exprToString in
+    match e with
+    | VarX -> "x"
+    | VarY -> "y"  
+    | Sine(t) -> ("sin(pi*"^(ex t)^")")
+    | Cosine(t) -> ("cos(pi*"^(ex t)^")")
+    | Average(s, t) -> ("(("^(ex s)^"+"^(ex t)^")/2)" )
+    | Times(s, t) -> ((ex s)^"*"^(ex t))
+    | Thresh(s, t, u, v) -> ("("^(ex s)^"<"^(ex t)^"?"^(ex u)^":"^
+                            (ex v)^")");;
+    
 
 (* build functions:
      Use these helper functions to generate elements of the expr
