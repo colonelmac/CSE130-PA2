@@ -40,10 +40,10 @@ let testTest () =
 let runTest (f,arg,out,points,name) =
   let _ = max := !max + points in
   let outs = 
-	match runWTimeout(f,arg,out,timeout) with 
-	    Pass -> (score := !score + points; "[pass]")
- 	  | Fail -> "[fail]"
-	  | ErrorCode e -> "[error: "^e^"]"  in
+  match runWTimeout(f,arg,out,timeout) with 
+      Pass -> (score := !score + points; "[pass]")
+    | Fail -> "[fail]"
+    | ErrorCode e -> "[error: "^e^"]"  in
   name^" "^outs^" ("^(string_of_int points)^")"
 
 (* explode : string -> char list *)
@@ -69,25 +69,25 @@ let runAllTests () =
        runTest (assoc, (-1,"bob",[("ranjit",85);("william",23);("moose",44);("margaret",99)]), -1, 2, "assoc 2");
        runTest (removeDuplicates,[1;6;2;4;12;2;13;6;9],[1;6;2;4;12;13;9],2,"removeDuplicates 1")]
       @
-	(let f x = let xx = x*x*x in (xx,xx<100) in
-	let g x = truncate (1e6 *. cos (1e-6 *. float x)) in
-	  [runTest (wwhile, (f,2), 512, 2, "wwhile 1");
-	   runTest (fixpoint, (g,0), 739085, 2, "fixpoint 1")])
+  (let f x = let xx = x*x*x in (xx,xx<100) in
+  let g x = truncate (1e6 *. cos (1e-6 *. float x)) in
+    [runTest (wwhile, (f,2), 512, 2, "wwhile 1");
+     runTest (fixpoint, (g,0), 739085, 2, "fixpoint 1")])
       @
-	[ runTest (emitGrayscale, (eval_fn sampleExpr,150,"art_g_sample"),(),5,"eval_fn 1 : manual");
-	  runTest (emitGrayscale, (eval_fn sampleExpr2,150,"art_g_sample2"),(),5,"eval_fn 2 : manual");
-	  runTest ((fun () -> doRandomGray (g1 ())), (), (),2,"Gray 1 : manual"); 
-	  runTest ((fun () -> doRandomGray (g2 ())), (), (),2,"Gray 2 : manual"); 
-	  runTest ((fun () -> doRandomGray (g3 ())), (), (),2,"Gray 3 : manual"); 
-	  runTest ((fun () -> doRandomColor (c1 ())), (), (),2,"Color 1 : manual"); 
-	  runTest ((fun () -> doRandomColor (c2 ())), (), (),2,"Color 2 : manual"); 
-	  runTest ((fun () -> doRandomColor (c3 ())), (), (),2,"Color 3 : manual");
-	  runTest ((fun () -> doRandomGray2 (g1 ())), (), (),2,"Gray2 1 : manual"); 
-	  runTest ((fun () -> doRandomGray2 (g2 ())), (), (),2,"Gray2 2 : manual"); 
-	  runTest ((fun () -> doRandomGray2 (g3 ())), (), (),2,"Gray2 3 : manual"); 
-	  runTest ((fun () -> doRandomColor2 (c1 ())), (), (),2,"Color2 1 : manual"); 
-	  runTest ((fun () -> doRandomColor2 (c2 ())), (), (),2,"Color2 2 : manual"); 
-	  runTest ((fun () -> doRandomColor2 (c3 ())), (), (),2,"Color2 3 : manual")]
+  [ runTest (emitGrayscale, (eval_fn sampleExpr,150,"art_g_sample"),(),5,"eval_fn 1 : manual");
+    runTest (emitGrayscale, (eval_fn sampleExpr2,150,"art_g_sample2"),(),5,"eval_fn 2 : manual");
+    runTest ((fun () -> doRandomGray (g1 ())), (), (),2,"Gray 1 : manual"); 
+    runTest ((fun () -> doRandomGray (g2 ())), (), (),2,"Gray 2 : manual"); 
+    runTest ((fun () -> doRandomGray (g3 ())), (), (),2,"Gray 3 : manual"); 
+    runTest ((fun () -> doRandomColor (c1 ())), (), (),2,"Color 1 : manual"); 
+    runTest ((fun () -> doRandomColor (c2 ())), (), (),2,"Color 2 : manual"); 
+    runTest ((fun () -> doRandomColor (c3 ())), (), (),2,"Color 3 : manual");
+    runTest ((fun () -> doRandomGray2 (g1 ())), (), (),2,"Gray2 1 : manual"); 
+    runTest ((fun () -> doRandomGray2 (g2 ())), (), (),2,"Gray2 2 : manual"); 
+    runTest ((fun () -> doRandomGray2 (g3 ())), (), (),2,"Gray2 3 : manual"); 
+    runTest ((fun () -> doRandomColor2 (c1 ())), (), (),2,"Color2 1 : manual"); 
+    runTest ((fun () -> doRandomColor2 (c2 ())), (), (),2,"Color2 2 : manual"); 
+    runTest ((fun () -> doRandomColor2 (c3 ())), (), (),2,"Color2 3 : manual")]
     in
     let s = Printf.sprintf "Results: Score/Max = %d / %d" !score !max in
     let _ = List.iter print130 (report@([s])) in

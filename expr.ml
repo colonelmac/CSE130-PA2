@@ -11,7 +11,7 @@ type expr =
   | Cosine   of expr
   | Average  of expr * expr
   | Times    of expr * expr
-  | Thresh   of expr * expr * expr * expr	
+  | Thresh   of expr * expr * expr * expr 
 
 let rec exprToString e = 
     
@@ -43,7 +43,17 @@ let buildThresh(a,b,a_less,b_less) = Thresh(a,b,a_less,b_less)
 
 let pi = 4.0 *. atan 1.0
 
-let rec eval (e,x,y) = failwith "to be written"
+let rec eval (e, x, y) = 
+
+    match e with
+    | Sine(t) -> sin (eval (t, x, y))
+    | Cosine(t) -> cos (eval (t, x, y))
+    | Average(s, t) -> (((eval (s, x, y)) +. (eval (t, x, y))) /. 2.0)
+    | Times(s, t) -> ((eval (s, x, y)) *. (eval (t, x, y)))
+    | Thresh(s, t, u, v) -> if ((eval (s, x, y)) < (eval (t, x, y))) then (eval (u, x, y)) else (eval (v, x, y))
+    | VarX -> x
+    | VarY -> y
+;;
 
 (* (eval_fn e (x,y)) evaluates the expression e at the point (x,y) and then
  * verifies that the result is between -1 and 1.  If it is, the result is returned.  
