@@ -1,14 +1,8 @@
-#use "misc.ml"
+#use "art.ml"
 
-let x = (10,2,[])
-let y = (2,"derrick",[("derrick", 1)])
+let _ = doRandomGray (8, 10, 23)
+let _ = doRandomGray (10, 5, 10)
 
-(*
-let first = (assoc x)
-let second = (assoc y)
-*)
-
-let printer str =
-    Printf.printf "%d" str;;
-
-let _ = printer (assoc y)
+let _ = doRandomColor(12, 7, 29)
+let _ = doRandomColor(10, 7, 29) 
+let _ = doRandomColor(8, 7, 29) 

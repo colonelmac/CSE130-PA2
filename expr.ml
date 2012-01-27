@@ -7,11 +7,13 @@
 type expr = 
     VarX
   | VarY
-  | Sine     of expr
-  | Cosine   of expr
-  | Average  of expr * expr
-  | Times    of expr * expr
-  | Thresh   of expr * expr * expr * expr 
+  | Sine       of expr
+  | Cosine     of expr
+  | Average    of expr * expr
+  | Times      of expr * expr
+  | Thresh     of expr * expr * expr * expr 
+  | FunnyTimes of expr * expr * expr
+  | Sqr        of expr
 
 let rec exprToString e = 
     
@@ -23,8 +25,9 @@ let rec exprToString e =
     | Cosine(t) -> ("cos(pi*"^(ex t)^")")
     | Average(s, t) -> ("(("^(ex s)^"+"^(ex t)^")/2)" )
     | Times(s, t) -> ((ex s)^"*"^(ex t))
-    | Thresh(s, t, u, v) -> ("("^(ex s)^"<"^(ex t)^"?"^(ex u)^":"^
-                            (ex v)^")");;
+    | Thresh(s, t, u, v) -> ("("^(ex s)^"<"^(ex t)^"?"^(ex u)^":"^(ex v)^")")
+    | FunnyTimes(s, t, u) -> ("(floor "^(ex s)^"* ceil "^(ex t)^"*"^(ex u)^")")
+    | Sqr(s) -> ("("^(ex s)^"*"^(ex s)^")")
     
 
 (* build functions:
@@ -40,6 +43,8 @@ let buildAverage(e1,e2)            = Average(e1,e2)
 let buildTimes(e1,e2)              = Times(e1,e2)
 let buildThresh(a,b,a_less,b_less) = Thresh(a,b,a_less,b_less)
 
+let buildFunnyTimes(e1, e2, e3)       = FunnyTimes(e1, e2, e3)
+let buildSqr(e1)                  = Sqr(e1)
 
 let pi = 4.0 *. atan 1.0
 
@@ -53,6 +58,8 @@ let rec eval (e, x, y) =
     | Thresh(s, t, u, v) -> if ((eval (s, x, y)) < (eval (t, x, y))) then (eval (u, x, y)) else (eval (v, x, y))
     | VarX -> x
     | VarY -> y
+    | FunnyTimes(s, t, u) -> ((floor (eval (s, x, y))) *. ((ceil (eval (t, x, y))) *. (eval (u, x, y))))
+    | Sqr(s) -> (let e = (eval (s, x, y)) in (e *. e))
 ;;
 
 (* (eval_fn e (x,y)) evaluates the expression e at the point (x,y) and then

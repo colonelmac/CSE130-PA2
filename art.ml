@@ -19,9 +19,52 @@
    the expression.
 *)
 
-let rec build (rand,depth) = failwith "to be implemented"
+let rec build (rand, depth) = 
 
-let rec build2 (rand,depth) = failwith "to be implemented"
+    if depth > 0 then 
+        
+        let r = (rand (0, 5)) in 
+        let d = (depth - 1) in 
+
+        match r with
+        | 0 -> buildSine((build (rand, d)))
+        | 1 -> buildCosine((build (rand, d)))
+        | 2 -> buildAverage((build (rand, d)), (build (rand, d)))
+        | 3 -> buildTimes((build (rand, d)), (build (rand, d)))
+        | 4 -> buildThresh((build (rand, d)), (build (rand, d)), (build (rand, d)), (build (rand, d)))
+        
+    else 
+
+        let r = (rand (0, 2)) in 
+
+        match r with
+        | 0 -> buildX()
+        | 1 -> buildY()
+;;
+
+let rec build2 (rand,depth) = 
+
+
+    if depth > 0 then 
+        
+        let r = (rand (0, 7)) in 
+        let d = (depth - 1) in 
+
+        match r with
+        | 0 -> buildSine((build (rand, d)))
+        | 1 -> buildCosine((build (rand, d)))
+        | 2 -> buildAverage((build (rand, d)), (build (rand, d)))
+        | 3 -> buildTimes((build (rand, d)), (build (rand, d)))
+        | 4 -> buildThresh((build (rand, d)), (build (rand, d)), (build (rand, d)), (build (rand, d)))
+        | 5 -> buildFunnyTimes((build (rand, d)), (build (rand, d)), (build (rand, d)))
+        | 6 -> buildSqr((build (rand, d)))
+    else 
+
+        let r = (rand (0, 2)) in 
+
+        match r with
+        | 0 -> buildX()
+        | 1 -> buildY()
 
 (* g1,g2,g3,c1,c2,c3 : unit -> int * int * int
  * these functions should return the parameters needed to create your 
@@ -29,13 +72,13 @@ let rec build2 (rand,depth) = failwith "to be implemented"
  * they should return (depth,seed1,seed2)
  *)
 
-let g1 () = failwith "to be implemented"  
-let g2 () = failwith "to be implemented"  
-let g3 () = failwith "to be implemented"  
+let g1 () = (12, 47, 23)  
+let g2 () = (10, 23, 11)  
+let g3 () = (8, 19, 47) 
 
-let c1 () = failwith "to be implemented"
-let c2 () = failwith "to be implemented" 
-let c3 () = failwith "to be implemented" 
+let c1 () = (12, 20, 30)
+let c2 () = (10, 10, 40) 
+let c3 () = (8, 0, 50)
 
 (**** You should not need to modify any code below here ****)
 
@@ -59,6 +102,7 @@ let makeRand (seed1, seed2) =
   let s = Random.State.make seed in
   (fun (x,y) -> (x + (Random.State.int s (y-x))))
 
+let rand = makeRand(10, 23)
 
 let rec rseq g r n =
   if n <= 0 then [] else (g r)::(rseq g r (n-1))
